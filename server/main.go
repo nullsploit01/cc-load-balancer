@@ -10,11 +10,23 @@ import (
 )
 
 func main() {
+	serverName := os.Getenv("SERVER_NAME")
+
+	r := NewRouter(serverName)
+
+	fmt.Printf("starting server: %s\n", serverName)
+
+	err := http.ListenAndServe(":8080", r)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewRouter(serverName string) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	serverName := os.Getenv("SERVER_NAME")
 	if serverName == "" {
 		serverName = "default-server"
 	}
@@ -23,10 +35,5 @@ func main() {
 		w.Write([]byte(fmt.Sprintf("{\"message\": \"sup from %s\"}", serverName)))
 	})
 
-	fmt.Printf("starting server: %s\n", serverName)
-
-	err := http.ListenAndServe(":8080", r)
-	if err != nil {
-		panic(err)
-	}
+	return r
 }
