@@ -25,14 +25,21 @@ func main() {
 	}
 
 	for i := range config.Servers {
-		go startHealthCheck(config.Servers[i])
+		go startHealthCheck(&config.Servers[i])
 	}
 
 	for {
+		server, err := chooseHealthyServer(config.Servers)
+		if err == nil {
+			fmt.Printf("Forwarding request to: %s\n", server.URL)
+		} else {
+			fmt.Println("No healthy servers available!")
+		}
+		time.Sleep(5 * time.Second) // Simulate requests coming in
 	}
 }
 
-func startHealthCheck(server Server) {
+func startHealthCheck(server *Server) {
 	ticker := time.NewTicker(time.Duration(server.HealthCheckInterval) * time.Second)
 	defer ticker.Stop()
 
@@ -48,4 +55,19 @@ func startHealthCheck(server Server) {
 		}
 		serverStateLock.Unlock()
 	}
+}
+
+var lastUsedServer = -1
+
+func chooseHealthyServer(servers []Server) (Server, error) {
+	serverStateLock.Lock()
+	defer serverStateLock.Unlock()
+	for i := 0; i < len(servers); i++ {
+		lastUsedServer = (lastUsedServer + 1) % len(servers)
+		if servers[lastUsedServer].IsHealthy {
+			return servers[lastUsedServer], nil
+		}
+	}
+
+	return Server{}, fmt.Errorf("No healthy servers available")
 }
