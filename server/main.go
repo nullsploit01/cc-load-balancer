@@ -24,8 +24,10 @@ func main() {
 
 func NewRouter(serverName string) *chi.Mux {
 	r := chi.NewRouter()
+
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(middleware.Heartbeat("/sup"))
 
 	if serverName == "" {
 		serverName = "default-server"
