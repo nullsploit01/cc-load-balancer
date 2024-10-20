@@ -6,13 +6,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Server struct {
-	ServerName          string `mapstructure:"server_name"`
-	URL                 string `mapstructure:"url"`
-	HealthCheckURL      string `mapstructure:"health_check_url"`
-	HealthCheckInterval int    `mapstructure:"health_check_interval"`
-}
-
 type Config struct {
 	Servers []Server `mapstructure:"servers"`
 }
