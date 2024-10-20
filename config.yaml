@@ -1,0 +1,13 @@
+servers:
+  - server_name: SERVER_ONE
+    url: http://localhost:8081
+    health_check_url: http://localhost:8081/sup
+    health_check_interval: 10
+  - server_name: SERVER_TWO
+    url: http://localhost:8082
+    health_check_url: http://localhost:8082/sup
+    health_check_interval: 10
+  - server_name: SERVER_THREE
+    url: http://localhost:8083
+    health_check_url: http://localhost:8083/sup
+    health_check_interval: 10
