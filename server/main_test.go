@@ -25,7 +25,7 @@ func TestRootEndpoint(t *testing.T) {
 		t.Errorf("Expected status OK, got %v", rr.Code)
 	}
 
-	expectedBody := `{"message": "sup from test-server"}`
+	expectedBody := `{"message": "test-server says, sup?"}`
 	if rr.Body.String() != expectedBody {
 		t.Errorf("Expected body '%s', got '%s'", expectedBody, rr.Body.String())
 	}
@@ -49,7 +49,7 @@ func TestDefaultServerName(t *testing.T) {
 		t.Errorf("Expected status OK, got %v", rr.Code)
 	}
 
-	expectedBody := `{"message": "sup from default-server"}`
+	expectedBody := `{"message": "default-server says, sup?"}`
 	if rr.Body.String() != expectedBody {
 		t.Errorf("Expected body '%s', got '%s'", expectedBody, rr.Body.String())
 	}

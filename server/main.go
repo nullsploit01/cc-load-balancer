@@ -32,7 +32,7 @@ func NewRouter(serverName string) *chi.Mux {
 	}
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(fmt.Sprintf("{\"message\": \"sup from %s\"}", serverName)))
+		w.Write([]byte(fmt.Sprintf("{\"message\": \"%s says, sup?\"}", serverName)))
 	})
 
 	return r
